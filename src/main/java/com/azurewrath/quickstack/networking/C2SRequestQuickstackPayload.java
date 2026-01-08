@@ -24,6 +24,7 @@ import com.azurewrath.quickstack.util.ItemStackUtils;
 import com.azurewrath.quickstack.util.SuccedableInventoryData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public record C2SRequestQuickstackPayload(boolean ignoreHotbar, boolean dump,
-                                       List<BlockEntityType<?>> teTypes, int minSlotCount) implements CustomPacketPayload {
+                                          List<BlockEntityType<?>> teTypes, int minSlotCount) implements CustomPacketPayload {
 
     public static final Type<C2SRequestQuickstackPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(QuickStack.MOD_ID, "request_quickstack"));
 
@@ -47,6 +48,13 @@ public record C2SRequestQuickstackPayload(boolean ignoreHotbar, boolean dump,
                 readRegistryIdArray(buf),
                 buf.readInt()
         );
+    }
+
+    public C2SRequestQuickstackPayload(boolean ignoreHotbar, boolean dump, List<BlockEntityType<?>> teTypes, int minSlotCount) {
+        this.ignoreHotbar = ignoreHotbar;
+        this.dump = dump;
+        this.teTypes = teTypes != null ? teTypes : new ArrayList<>();
+        this.minSlotCount = minSlotCount;
     }
 
     public static void write(FriendlyByteBuf buf, C2SRequestQuickstackPayload payload) {
