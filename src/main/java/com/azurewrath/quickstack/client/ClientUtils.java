@@ -34,6 +34,7 @@ public class ClientUtils {
         if (Minecraft.getInstance().player.isSpectator()) {
             printToChat("Action not allowed in spectator mode.");
         } else {
+            // 使用安全的配置访问方式
             C2SRequestQuickstackPayload quickstackMessage = new C2SRequestQuickstackPayload(
                     QuickStackConfig.CLIENT.ignoreHotBar.get(),
                     dump,
