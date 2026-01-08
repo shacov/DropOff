@@ -5,8 +5,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import com.azurewrath.quickstack.QuickStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,29 +97,40 @@ public class QuickStackConfig {
         }
     }
 
-    public static List<BlockEntityType<?>> blockEntityBlacklist;
-    public static int favorite_color_cache;
+    public static List<BlockEntityType<?>> blockEntityBlacklist = new ArrayList<>();
+    public static int favorite_color_cache = 0xFFFFBB; // 默认颜色
 
     public static void onConfigChanged(ModConfigEvent event) {
         if (!event.getConfig().getModId().equals(QuickStack.MOD_ID)) {
             return;
         }
 
-        blockEntityBlacklist = CLIENT.blacklistedTes.get()
-                .stream()
-                .map(ResourceLocation::tryParse)
-                .filter(resourceLocation -> {
-                    boolean exists = BuiltInRegistries.BLOCK_ENTITY_TYPE.containsKey(resourceLocation);
-                    if (!exists) {
-                        QuickStack.LOGGER.warn("Ignoring unknown blockentity: " + resourceLocation);
-                    }
-                    return exists;
-                })
-                .map(BuiltInRegistries.BLOCK_ENTITY_TYPE::get)
-                .collect(Collectors.toList());
+        // 只在客户端处理客户端配置
+        if (event.getConfig().getType() == net.neoforged.fml.config.ModConfig.Type.CLIENT) {
+            // 确保我们在客户端环境
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                try {
+                    blockEntityBlacklist = CLIENT.blacklistedTes.get()
+                            .stream()
+                            .map(ResourceLocation::tryParse)
+                            .filter(resourceLocation -> {
+                                boolean exists = BuiltInRegistries.BLOCK_ENTITY_TYPE.containsKey(resourceLocation);
+                                if (!exists) {
+                                    QuickStack.LOGGER.warn("Ignoring unknown blockentity: " + resourceLocation);
+                                }
+                                return exists;
+                            })
+                            .map(BuiltInRegistries.BLOCK_ENTITY_TYPE::get)
+                            .collect(Collectors.toList());
 
-        favorite_color_cache = Integer.decode(CLIENT.favorite_color.get().replace("#", "0x"));
+                    favorite_color_cache = Integer.decode(CLIENT.favorite_color.get().replace("#", "0x"));
 
-        QuickStack.LOGGER.info("Configuration changed.");
+                    QuickStack.LOGGER.info("Configuration changed.");
+                } catch (IllegalStateException e) {
+                    // 如果配置尚未加载，记录警告并跳过
+                    QuickStack.LOGGER.warn("Client config not loaded yet, using default values.");
+                }
+            }
+        }
     }
 }
