@@ -1,7 +1,7 @@
 {
-  "quickstack.dump_nearby" : "将所有物品存至最近的容器",
-  "quickstack.quick_stack" : "将可卸货的物品存至对应容器",
-  "quickstack.key.dump": "卸货所有",
-  "quickstack.key.deposit": "卸货匹配",
+  "quickstack.dump_nearby" : "卸货所有",
+  "quickstack.quick_stack" : "快速堆叠",
+  "quickstack.key.dump": "卸货",
+  "quickstack.key.deposit": "存放",
   "quickstack.tooltip.favorited" : "已收藏!"
 }
