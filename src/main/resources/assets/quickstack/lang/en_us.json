@@ -3,5 +3,8 @@
   "quickstack.quick_stack" : "Quick Stack to Nearby Chests",
   "quickstack.key.dump": "Dump",
   "quickstack.key.deposit": "Deposit",
-  "quickstack.tooltip.favorited" : "Favorited!"
+  "quickstack.tooltip.favorited" : "Favorited!",
+  "quickstack.message.items_moved_to": "items moved to",
+  "quickstack.message.containers_of": "containers of",
+  "quickstack.message.checked_in_total": "checked in total"
 }
