@@ -21,13 +21,22 @@ import java.util.List;
 
 public class ClientUtils {
 
-    public static void printToChat(String message) {
-        message = "[" + ChatFormatting.BLUE + "QuickStack" + ChatFormatting.RESET + "]: " + message;
+    // 新增：接受 Component 参数的方法
+    public static void printToChat(Component message) {
+        Component prefix = Component.literal("[")
+                .append(Component.literal("QuickStack").withStyle(ChatFormatting.BLUE))
+                .append("]: ")
+                .append(message);
 
         LocalPlayer player = Minecraft.getInstance().player;
-        var textComponentString = Component.literal(message);
+        player.sendSystemMessage(prefix);
+    }
 
-        player.sendSystemMessage(textComponentString);
+    // 保留原有方法，但修改实现（如果需要）
+    public static void printToChat(String message) {
+        // 或者删除此方法，确保所有调用都使用 Component 版本
+        Component textComponent = Component.literal(message);
+        printToChat(textComponent);
     }
 
     public static void sendNoSpectator(boolean dump) {
