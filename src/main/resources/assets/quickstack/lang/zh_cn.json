@@ -3,5 +3,8 @@
   "quickstack.quick_stack" : "快速堆叠",
   "quickstack.key.dump": "卸货",
   "quickstack.key.deposit": "存放",
-  "quickstack.tooltip.favorited" : "已收藏!"
+  "quickstack.tooltip.favorited" : "已收藏!",
+  "quickstack.message.items_moved_to": "个物品被移动到",
+  "quickstack.message.containers_of": "个容器在",
+  "quickstack.message.checked_in_total": "个检测到的容器中"
 }
