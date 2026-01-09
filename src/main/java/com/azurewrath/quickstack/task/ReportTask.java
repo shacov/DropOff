@@ -4,10 +4,10 @@ import com.azurewrath.quickstack.client.ClientUtils;
 import com.azurewrath.quickstack.client.RendererCubeTarget;
 import com.azurewrath.quickstack.client.events.RenderWorldLastEventHandler;
 import com.azurewrath.quickstack.config.QuickStackConfig;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
-
-import static com.azurewrath.quickstack.util.MessageUtils.red;
 
 public class ReportTask implements Runnable {
 
@@ -32,10 +32,20 @@ public class ReportTask implements Runnable {
         }
 
         if (QuickStackConfig.CLIENT.displayMessage.get()) {
-            String message = red(String.valueOf(itemsCounter)) +
-                    " items moved to " + red(String.valueOf(affectedContainers)) +
-                    " containers of " + red(String.valueOf(totalContainers)) +
-                    " checked in total.";
+            // 正确构建 Component，而不是字符串
+            Component message = Component.literal("")
+                    .append(Component.literal(String.valueOf(itemsCounter)).withStyle(ChatFormatting.RED))
+                    .append(" ")
+                    .append(Component.translatable("quickstack.message.items_moved_to"))
+                    .append(" ")
+                    .append(Component.literal(String.valueOf(affectedContainers)).withStyle(ChatFormatting.RED))
+                    .append(" ")
+                    .append(Component.translatable("quickstack.message.containers_of"))
+                    .append(" ")
+                    .append(Component.literal(String.valueOf(totalContainers)).withStyle(ChatFormatting.RED))
+                    .append(" ")
+                    .append(Component.translatable("quickstack.message.checked_in_total"))
+                    .append(".");
 
             ClientUtils.printToChat(message);
         }
